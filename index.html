@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Freepto-vagrant by AvANa-BBS</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Freepto-vagrant</h1>
+        <p>Freepto Vagrantfile</p>
+
+        <p class="view"><a href="https://github.com/AvANa-BBS/freepto-vagrant">View the Project on GitHub <small>AvANa-BBS/freepto-vagrant</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/AvANa-BBS/freepto-vagrant/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/AvANa-BBS/freepto-vagrant/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/AvANa-BBS/freepto-vagrant">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="freepto-vagrant" class="anchor" href="#freepto-vagrant"><span class="octicon octicon-link"></span></a>Freepto-vagrant</h1>
+
+<p>Easy way for create a Freepto development environment</p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h4>
+<a name="vagrant-setup" class="anchor" href="#vagrant-setup"><span class="octicon octicon-link"></span></a>Vagrant setup:</h4>
+
+<p>Install Vagrant 1.6.2:</p>
+
+<ul>
+<li> <a href="http://www.vagrantup.com/">http://www.vagrantup.com/</a>
+</li>
+<li> <a href="http://dev.freepto.mx/vagrant/utils/">http://dev.freepto.mx/vagrant/utils/</a>
+</li>
+</ul><p><code>$ sudo apt-get install git virtualbox</code></p>
+
+<p><code>$ git clone <a href="https://github.com/vinc3nt/freepto-vagrant.git">https://github.com/vinc3nt/freepto-vagrant.git</a></code></p>
+
+<p><code>$ cd freepto-vagrant</code></p>
+
+<p><code>$ vagrant up vbox --provider=virtualbox</code></p>
+
+<p><code>$ vagrant ssh vbox</code></p>
+
+<h4>
+<a name="build-freepto" class="anchor" href="#build-freepto"><span class="octicon octicon-link"></span></a>Build Freepto:</h4>
+
+<p><code>$ sudo vim /etc/freeptobuild.cfg</code></p>
+
+<p><code>$ sudo freeptobuild /home/vagrant/freepto-lb</code></p>
+
+<h4>
+<a name="build-from-another-repository" class="anchor" href="#build-from-another-repository"><span class="octicon octicon-link"></span></a>Build from another repository:</h4>
+
+<p><code>$ git clone <a href="https://github.com/vinc3nt/freepto-lb.git">https://github.com/vinc3nt/freepto-lb.git</a> freepto-lb_vinc3nt</code></p>
+
+<p><code>$ sudo freeptobuild /home/vagrant/freepto-lb_vinc3nt</code></p>
+
+<h4>
+<a name="build-with-a-diffrent-localization" class="anchor" href="#build-with-a-diffrent-localization"><span class="octicon octicon-link"></span></a>Build with a diffrent localization:</h4>
+
+<p>The default localization is italian, but is possible configure a different localization:</p>
+
+<p><code>$ sudo freeptobuild /home/vagrant/freepto-lb en_GB.UTF-8 Europe/London en</code></p>
+
+<h4>
+<a name="add-libvirt-support" class="anchor" href="#add-libvirt-support"><span class="octicon octicon-link"></span></a>Add libvirt support:</h4>
+
+<p>Install KVM, qemu and libvirt:</p>
+
+<ul>
+<li> <a href="https://wiki.debian.org/KVM">https://wiki.debian.org/KVM</a>
+</li>
+<li> <a href="https://wiki.debian.org/QEMU">https://wiki.debian.org/QEMU</a>
+</li>
+<li> <a href="https://wiki.debian.org/libvirt">https://wiki.debian.org/libvirt</a>
+</li>
+</ul><p><code>$ sudo apt-get install libxslt-dev libxml2-dev libvirt-dev</code></p>
+
+<p><code>$ vagrant plugin install vagrant-libvirt</code></p>
+
+<p>Currently vagrant-libvirt support rsync as a default method for shared folder sync.
+However, with rsync is possible only an uni-directional sync (physical host -&gt; virtual machine).
+In order to provide a bi-directional sync, the shared folder will be mounted with NFS.</p>
+
+<p>Unfortunately, some additional configurations are needed:</p>
+
+<p><code>$ sudo apt-get install nfs-kernel-server nfs-common portmap</code></p>
+
+<p><code>$ sudo service nfs-common start</code></p>
+
+<p><code>$ sudo service nfs-kernel-server start</code></p>
+
+<p><code>$ sudo service rpcbind start</code></p>
+
+<p><code>$ vagrant up kvm --provider=libvirt</code></p>
+
+<p><code>$ vagrant ssh kvm</code></p>
+
+<h2>
+<a name="creating-a-new-custom-virtualbox-image" class="anchor" href="#creating-a-new-custom-virtualbox-image"><span class="octicon octicon-link"></span></a>Creating a new custom virtualbox image</h2>
+
+<p>A box for VirtualBox is already available from <a href="http://dev.freepto.mx/vagrant/">http://dev.freepto.mx/vagrant/</a> but if you want create a custom VirtualBox image, you should follow these steps:</p>
+
+<ol>
+<li><p>Install packer: </p></li>
+</ol><ul>
+<li><p><a href="http://www.packer.io">http://www.packer.io</a></p></li>
+</ul><ol>
+<li><p>Customize provisioning scripts</p></li>
+<li><p>Build a new freepto-vbox.box</p></li>
+</ol><p><code>$ cd packer</code></p>
+
+<p><code>$ packer build --only=freepto-vbox freepto.json</code></p>
+
+<p><code>$ vagrant box add builds/virtualbox/freepto-vbox.box --name freepto --force</code></p>
+
+<h2>
+<a name="creating-a-new-custom-libvirt-image" class="anchor" href="#creating-a-new-custom-libvirt-image"><span class="octicon octicon-link"></span></a>Creating a new custom libvirt image</h2>
+
+<p>A box for libvirt is already available from <a href="http://dev.freepto.mx/vagrant/">http://dev.freepto.mx/vagrant/</a> but if you want create a custom libvirt image, you should follow these steps:</p>
+
+<p><code>$ cd packer</code></p>
+
+<p><code>$ packer build --only=freepto-libvirt freepto.json</code></p>
+
+<p><code>$ ./raw2box.sh</code></p>
+
+<p><code>$ vagrant box add builds/libvirt/freepto-libvirt.box --name freepto --force</code></p>
+
+<h2>
+<a name="update-an-existing-vagrant-box" class="anchor" href="#update-an-existing-vagrant-box"><span class="octicon octicon-link"></span></a>Update an existing vagrant box</h2>
+
+<p><code>$ vagrant box list</code></p>
+
+<p><code>$ vagrant box repackage --output freepto-${boxname}.box ${boxname}</code></p>
+
+<h2>
+<a name="note" class="anchor" href="#note"><span class="octicon octicon-link"></span></a>NOTE:</h2>
+
+<p>Tested with the following software relases:</p>
+
+<p><code>$ vboxmanage --version</code></p>
+
+<p>4.3.10_Debianr93012</p>
+
+<p><code>$ vagrant -v</code></p>
+
+<p>Vagrant 1.6.2</p>
+
+<p><code>$ vagrant plugin list | grep vagrant-libvirt</code></p>
+
+<p>vagrant-libvirt (0.0.16)</p>
+
+<p><code>$ cat /etc/debian_version</code></p>
+
+<p>jessie/sid</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/AvANa-BBS">AvANa-BBS</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
